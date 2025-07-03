@@ -57,15 +57,16 @@ export default function DashboardPage() {
       
     console.log('Dashboard - resultado da busca de mensagens:', { msgs, msgsError });
     
-    // Verifica se há novas mensagens
-    if (msgs && msgs.length !== mensagens.length) {
-      setMensagens(msgs);
-      if (msgs.length > mensagens.length) {
-        setFeedback('Nova mensagem recebida! 🎉');
-        setTimeout(() => setFeedback(null), 3000);
-      }
-    } else {
-      setMensagens(msgs || []);
+    // Verifica se há novas mensagens (apenas para atualização automática)
+    const temNovasMensagens = msgs && msgs.length > mensagens.length;
+    
+    // Sempre atualiza as mensagens
+    setMensagens(msgs || []);
+    
+    // Mostra feedback apenas se há novas mensagens
+    if (temNovasMensagens) {
+      setFeedback('Nova mensagem recebida! 🎉');
+      setTimeout(() => setFeedback(null), 3000);
     }
     
     setCarregando(false);
@@ -96,9 +97,11 @@ export default function DashboardPage() {
   };
 
   // Função para atualizar manualmente
-  const handleAtualizar = () => {
+  const handleAtualizar = async () => {
     setFeedback('Atualizando...');
-    fetchData();
+    await fetchData();
+    setFeedback('Atualizado!');
+    setTimeout(() => setFeedback(null), 1500);
   };
 
   // Ações dos cards
