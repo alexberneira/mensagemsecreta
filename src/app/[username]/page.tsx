@@ -27,7 +27,7 @@ export default function PublicInboxPage() {
     const ultima = localStorage.getItem('ultimaMsg_' + username);
     if (!ultima) return true;
     const diff = Date.now() - Number(ultima);
-    return diff > 60000; // 1 minuto
+    return diff > 5000; // 5 segundos
   };
 
   const handleEnviar = async (e: React.FormEvent) => {
@@ -45,7 +45,7 @@ export default function PublicInboxPage() {
       return;
     }
     if (!podeEnviar()) {
-      setFeedback('Aguarde 1 minuto entre mensagens.');
+      setFeedback('Aguarde 5 segundos entre mensagens.');
       return;
     }
 
