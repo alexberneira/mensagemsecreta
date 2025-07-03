@@ -27,31 +27,31 @@ export default function CardMensagem({ conteudo, status, onCopiar, onRepostar, o
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 hover:shadow-md transition-shadow duration-200">
+    <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow duration-200">
       {/* Conteúdo da mensagem */}
-      <div className="mb-6">
-        <div className="text-gray-900 text-lg leading-relaxed whitespace-pre-wrap">
+      <div className="mb-4">
+        <div className="text-gray-900 leading-relaxed whitespace-pre-wrap">
           {conteudo}
         </div>
       </div>
 
       {/* Resposta */}
       {resposta && (
-        <div className="mb-6 p-6 bg-gray-50 rounded-xl border border-gray-200">
-          <div className="flex items-center gap-2 mb-3">
-            <span className="font-semibold text-gray-900">Resposta</span>
+        <div className="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="font-semibold text-gray-900 text-sm">Resposta</span>
           </div>
-          <div className="text-gray-700 leading-relaxed whitespace-pre-wrap">
+          <div className="text-gray-700 leading-relaxed whitespace-pre-wrap text-sm">
             {resposta}
           </div>
         </div>
       )}
 
       {/* Status e ações */}
-      <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-gray-100">
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-gray-100">
         {/* Status */}
-        <div className={`flex items-center gap-2 px-3 py-1 rounded-full border ${getStatusColor(status)}`}>
-          <span className="text-sm font-medium capitalize">{status}</span>
+        <div className={`flex items-center gap-2 px-2 py-1 rounded-full border text-xs ${getStatusColor(status)}`}>
+          <span className="font-medium capitalize">{status}</span>
         </div>
 
         {/* Ações */}
@@ -59,7 +59,7 @@ export default function CardMensagem({ conteudo, status, onCopiar, onRepostar, o
           {onCopiar && (
             <button 
               onClick={onCopiar} 
-              className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors duration-200 text-sm font-medium"
+              className="bg-gray-900 text-white px-3 py-1.5 rounded-md hover:bg-gray-800 transition-colors duration-200 text-xs font-medium"
             >
               Copiar
             </button>
@@ -67,7 +67,7 @@ export default function CardMensagem({ conteudo, status, onCopiar, onRepostar, o
           {onRepostar && (
             <button 
               onClick={onRepostar} 
-              className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors duration-200 text-sm font-medium"
+              className="bg-gray-900 text-white px-3 py-1.5 rounded-md hover:bg-gray-800 transition-colors duration-200 text-xs font-medium"
             >
               Repostar
             </button>
@@ -75,7 +75,7 @@ export default function CardMensagem({ conteudo, status, onCopiar, onRepostar, o
           {onDenunciar && (
             <button 
               onClick={onDenunciar} 
-              className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors duration-200 text-sm font-medium"
+              className="bg-red-600 text-white px-3 py-1.5 rounded-md hover:bg-red-700 transition-colors duration-200 text-xs font-medium"
             >
               Denunciar
             </button>
@@ -83,7 +83,7 @@ export default function CardMensagem({ conteudo, status, onCopiar, onRepostar, o
           {onResponder && (
             <button 
               onClick={onResponder} 
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm font-medium"
+              className="bg-blue-600 text-white px-3 py-1.5 rounded-md hover:bg-blue-700 transition-colors duration-200 text-xs font-medium"
             >
               Responder
             </button>
