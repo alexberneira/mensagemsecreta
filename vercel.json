@@ -1,0 +1,43 @@
+{
+  "rewrites": [
+    {
+      "source": "/:username",
+      "destination": "/[username]"
+    },
+    {
+      "source": "/mensagem/:id",
+      "destination": "/mensagem/[id]"
+    },
+    {
+      "source": "/responder/:id",
+      "destination": "/responder/[id]"
+    },
+    {
+      "source": "/recuperar-senha",
+      "destination": "/recuperar-senha"
+    },
+    {
+      "source": "/nova-senha",
+      "destination": "/nova-senha"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    }
+  ]
+} 
