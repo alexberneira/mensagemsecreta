@@ -129,58 +129,91 @@ export default function DashboardPage() {
   }
 
   return (
-    <main className="flex flex-col items-center min-h-screen p-4">
-      <div className="w-full max-w-xl flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Seu Inbox Secreta</h1>
-        <button
-          onClick={handleLogout}
-          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-        >
-          Sair
-        </button>
-      </div>
-      
-      {/* Status de atualização */}
-      <div className="w-full max-w-xl flex justify-between items-center mb-4 text-sm text-gray-600">
-        <span>Última atualização: {ultimaAtualizacao.toLocaleTimeString('pt-BR')}</span>
-        <button
-          onClick={handleAtualizar}
-          className="text-blue-500 hover:text-blue-600 underline"
-        >
-          Atualizar agora
-        </button>
-      </div>
-      
-      <div className="mb-4">
-        <BotaoCopiarLink link={typeof window !== 'undefined' ? window.location.origin + '/' + username : ''} />
-      </div>
-      
-      {feedback && (
-        <div className={`mb-2 p-2 rounded ${
-          feedback.includes('Nova mensagem') 
-            ? 'bg-green-100 text-green-700' 
-            : feedback.includes('Atualizando')
-            ? 'bg-blue-100 text-blue-700'
-            : 'text-green-600'
-        }`}>
-          {feedback}
+    <main className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 p-6">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-amber-200 p-6 mb-8">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-3xl font-serif text-amber-900 mb-2">📬 Seu Inbox Secreta</h1>
+              <p className="text-amber-700 font-medium">Suas mensagens anônimas estão aqui</p>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-3 rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-md hover:shadow-lg font-medium"
+            >
+              🚪 Sair
+            </button>
+          </div>
         </div>
-      )}
-      
-      <div className="w-full max-w-xl">
-        {mensagens.length === 0 && <p className="text-gray-500">Nenhuma mensagem recebida ainda.</p>}
-        {mensagens.map(msg => (
-          <CardMensagem
-            key={msg.id}
-            conteudo={msg.content}
-            status={msg.status || 'nova'}
-            resposta={msg.response_text}
-            onCopiar={() => copiarMensagem(msg.content)}
-            onRepostar={() => repostarMensagem(msg.content)}
-            onDenunciar={() => denunciarMensagem(msg.id)}
-            onResponder={() => responderMensagem(msg.id)}
-          />
-        ))}
+        
+        {/* Status de atualização */}
+        <div className="bg-white/60 backdrop-blur-sm rounded-xl shadow-md border border-amber-200 p-4 mb-6">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-3">
+              <span className="text-amber-800 font-medium">🕐 Última atualização:</span>
+              <span className="text-amber-700 font-serif">{ultimaAtualizacao.toLocaleTimeString('pt-BR')}</span>
+            </div>
+            <button
+              onClick={handleAtualizar}
+              className="bg-gradient-to-r from-amber-500 to-orange-500 text-white px-4 py-2 rounded-lg hover:from-amber-600 hover:to-orange-600 transition-all duration-200 shadow-md hover:shadow-lg font-medium"
+            >
+              🔄 Atualizar agora
+            </button>
+          </div>
+        </div>
+        
+        {/* Link da caixa */}
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-amber-200 p-6 mb-8">
+          <div className="text-center">
+            <h2 className="text-xl font-serif text-amber-900 mb-4">🔗 Seu Link Público</h2>
+            <BotaoCopiarLink link={typeof window !== 'undefined' ? window.location.origin + '/' + username : ''} />
+          </div>
+        </div>
+        
+        {/* Feedback */}
+        {feedback && (
+          <div className={`mb-6 p-4 rounded-xl shadow-md border ${
+            feedback.includes('Nova mensagem') 
+              ? 'bg-green-100/80 border-green-300 text-green-800' 
+              : feedback.includes('Atualizando')
+              ? 'bg-blue-100/80 border-blue-300 text-blue-800'
+              : feedback.includes('Atualizado')
+              ? 'bg-amber-100/80 border-amber-300 text-amber-800'
+              : 'bg-green-100/80 border-green-300 text-green-800'
+          }`}>
+            <div className="flex items-center gap-2">
+              {feedback.includes('Nova mensagem') && '🎉'}
+              {feedback.includes('Atualizando') && '⏳'}
+              {feedback.includes('Atualizado') && '✅'}
+              <span className="font-medium">{feedback}</span>
+            </div>
+          </div>
+        )}
+        
+        {/* Mensagens */}
+        <div className="space-y-6">
+          {mensagens.length === 0 ? (
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-amber-200 p-12 text-center">
+              <div className="text-6xl mb-4">📭</div>
+              <h3 className="text-2xl font-serif text-amber-900 mb-2">Nenhuma mensagem ainda</h3>
+              <p className="text-amber-700">Compartilhe seu link para começar a receber mensagens anônimas!</p>
+            </div>
+          ) : (
+            mensagens.map(msg => (
+              <CardMensagem
+                key={msg.id}
+                conteudo={msg.content}
+                status={msg.status || 'nova'}
+                resposta={msg.response_text}
+                onCopiar={() => copiarMensagem(msg.content)}
+                onRepostar={() => repostarMensagem(msg.content)}
+                onDenunciar={() => denunciarMensagem(msg.id)}
+                onResponder={() => responderMensagem(msg.id)}
+              />
+            ))
+          )}
+        </div>
       </div>
     </main>
   );
