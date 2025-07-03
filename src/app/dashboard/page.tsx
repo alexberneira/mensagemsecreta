@@ -195,9 +195,10 @@ export default function DashboardPage() {
               <p className="text-gray-600 text-sm">Compartilhe seu link para começar a receber mensagens anônimas</p>
             </div>
           ) : (
-            mensagens.map(msg => (
+            mensagens.map((msg, index) => (
               <CardMensagem
                 key={msg.id}
+                numero={mensagens.length - index}
                 conteudo={msg.content}
                 status={msg.status || 'nova'}
                 resposta={msg.response_text}
