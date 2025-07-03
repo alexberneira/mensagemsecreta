@@ -116,54 +116,77 @@ ${responseLink}`);
   };
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen p-4">
-      <h1 className="text-2xl font-bold mb-4">Enviar mensagem anônima para @{username}</h1>
-      <form onSubmit={handleEnviar} className="flex flex-col gap-4 w-full max-w-md">
-        <textarea
-          placeholder="Digite sua mensagem..."
-          value={mensagem}
-          onChange={(e) => setMensagem(e.target.value)}
-          className="p-3 border rounded-lg resize-none h-32"
-          maxLength={500}
-        />
-        <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            id="termos"
-            checked={termos}
-            onChange={(e) => setTermos(e.target.checked)}
-          />
-          <label htmlFor="termos" className="text-sm">
-            Aceito os termos de uso e política de privacidade
-          </label>
-        </div>
-        <button
-          type="submit"
-          disabled={enviando}
-          className="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 disabled:opacity-50"
-        >
-          {enviando ? 'Enviando...' : 'Enviar Mensagem Anônima'}
-        </button>
-      </form>
-      {feedback && (
-        <div className={`mt-4 p-3 rounded-lg ${feedback.includes('sucesso') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-          {feedback}
-          {linkResposta && feedback.includes('sucesso') && (
-            <div className="mt-3">
-              <button
-                onClick={copiarLinkManual}
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-sm"
-              >
-                📋 Copiar Link Novamente
-              </button>
+    <main className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+          <div className="text-center mb-8">
+            <h1 className="text-2xl font-semibold text-gray-900 mb-2">Enviar mensagem anônima</h1>
+            <p className="text-gray-600 text-sm">Para @{username}</p>
+          </div>
+          
+          <form onSubmit={handleEnviar} className="space-y-4">
+            <div>
+              <label htmlFor="mensagem" className="block text-sm font-medium text-gray-700 mb-1">
+                Mensagem
+              </label>
+              <textarea
+                id="mensagem"
+                placeholder="Digite sua mensagem..."
+                value={mensagem}
+                onChange={(e) => setMensagem(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-lg resize-none h-32 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors duration-200"
+                maxLength={500}
+              />
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="termos"
+                checked={termos}
+                onChange={(e) => setTermos(e.target.checked)}
+                className="rounded border-gray-300 focus:ring-gray-500"
+              />
+              <label htmlFor="termos" className="text-sm text-gray-700">
+                Aceito os termos de uso e política de privacidade
+              </label>
+            </div>
+            
+            <button
+              type="submit"
+              disabled={enviando}
+              className="w-full bg-gray-900 text-white p-3 rounded-lg hover:bg-gray-800 disabled:opacity-50 font-medium transition-colors duration-200"
+            >
+              {enviando ? 'Enviando...' : 'Enviar Mensagem Anônima'}
+            </button>
+          </form>
+          
+          {feedback && (
+            <div className={`mt-4 p-3 rounded-lg ${
+              feedback.includes('sucesso') 
+                ? 'bg-green-50 border border-green-200 text-green-800' 
+                : 'bg-red-50 border border-red-200 text-red-800'
+            } text-sm`}>
+              {feedback}
+              {linkResposta && feedback.includes('sucesso') && (
+                <div className="mt-3">
+                  <button
+                    onClick={copiarLinkManual}
+                    className="bg-gray-900 text-white px-4 py-2 rounded hover:bg-gray-800 transition-colors duration-200 text-xs"
+                  >
+                    Copiar Link Novamente
+                  </button>
+                </div>
+              )}
             </div>
           )}
+          
+          <div className="mt-8 text-center space-y-2 text-xs text-gray-600">
+            <p>• Sua mensagem é completamente anônima</p>
+            <p>• Nenhum dado pessoal é coletado</p>
+            <p>• Respeite os outros usuários</p>
+          </div>
         </div>
-      )}
-      <div className="mt-8 text-center text-sm text-gray-600">
-        <p>• Sua mensagem é completamente anônima</p>
-        <p>• Nenhum dado pessoal é coletado</p>
-        <p>• Respeite os outros usuários</p>
       </div>
     </main>
   );

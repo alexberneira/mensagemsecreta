@@ -44,10 +44,13 @@ export default function RecuperarSenhaPage() {
   };
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-50">
+    <main className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="bg-white p-8 rounded-lg shadow-md">
-          <h1 className="text-2xl font-bold text-center mb-6">Recuperar Senha</h1>
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+          <div className="text-center mb-8">
+            <h1 className="text-2xl font-semibold text-gray-900 mb-2">Recuperar Senha</h1>
+            <p className="text-gray-600 text-sm">Enviaremos um link para redefinir sua senha</p>
+          </div>
           
           <form onSubmit={handleRecuperarSenha} className="space-y-4">
             <div>
@@ -60,7 +63,7 @@ export default function RecuperarSenhaPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors duration-200"
                 placeholder="Digite seu e-mail"
               />
             </div>
@@ -68,7 +71,7 @@ export default function RecuperarSenhaPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 disabled:opacity-50 font-medium"
+              className="w-full bg-gray-900 text-white p-3 rounded-lg hover:bg-gray-800 disabled:opacity-50 font-medium transition-colors duration-200"
             >
               {loading ? 'Enviando...' : 'Enviar E-mail de Recuperação'}
             </button>
@@ -77,15 +80,15 @@ export default function RecuperarSenhaPage() {
           {message && (
             <div className={`mt-4 p-3 rounded-lg ${
               message.includes('enviado') 
-                ? 'bg-green-100 text-green-700' 
-                : 'bg-red-100 text-red-700'
-            }`}>
+                ? 'bg-green-50 border border-green-200 text-green-800' 
+                : 'bg-red-50 border border-red-200 text-red-800'
+            } text-sm`}>
               {message}
             </div>
           )}
 
           <div className="mt-6 text-center">
-            <Link href="/login" className="text-blue-500 hover:text-blue-600 text-sm">
+            <Link href="/login" className="text-gray-600 hover:text-gray-900 text-sm transition-colors duration-200">
               ← Voltar para o login
             </Link>
           </div>

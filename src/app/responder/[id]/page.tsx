@@ -105,65 +105,62 @@ export default function ResponderPage() {
   }
 
   return (
-    <main className="flex flex-col items-center min-h-screen p-4">
+    <main className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="w-full max-w-2xl">
-        <h1 className="text-2xl font-bold mb-6 text-center">Responder Mensagem Anônima</h1>
-
-        {/* Mensagem Original */}
-        <div className="bg-gray-50 p-6 rounded-lg mb-6">
-          <h2 className="font-semibold mb-2">Mensagem Original:</h2>
-          <p className="text-gray-700 whitespace-pre-wrap">{mensagem.content}</p>
-          <div className="text-sm text-gray-500 mt-2">
-            Enviada em: {new Date(mensagem.created_at).toLocaleString('pt-BR')}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+          <div className="text-center mb-8">
+            <h1 className="text-2xl font-semibold text-gray-900 mb-2">Responder Mensagem</h1>
           </div>
-        </div>
 
-        {/* Resposta existente */}
-        {mensagem.response_text && (
-          <div className="bg-blue-50 p-6 rounded-lg mb-6">
-            <h2 className="font-semibold mb-2">Resposta Atual:</h2>
-            <p className="text-gray-700 whitespace-pre-wrap">{mensagem.response_text}</p>
-            <div className="text-sm text-gray-500 mt-2">
-              Respondida em: {new Date(mensagem.updated_at || mensagem.created_at).toLocaleString('pt-BR')}
+          {/* Mensagem Original */}
+          <div className="bg-gray-50 p-6 rounded-lg mb-6">
+            <h2 className="font-semibold text-gray-900 mb-3">Mensagem Original:</h2>
+            <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">
+              {mensagem.content}
+            </p>
+            <div className="text-sm text-gray-500 mt-3">
+              Enviada em: {new Date(mensagem.created_at).toLocaleString('pt-BR')}
             </div>
           </div>
-        )}
 
-        {/* Formulário de Resposta */}
-        <form onSubmit={handleResponder} className="bg-white p-6 rounded-lg border">
-          <h2 className="font-semibold mb-4">
-            {mensagem.response_text ? 'Editar Resposta:' : 'Responder Anonimamente:'}
-          </h2>
-          <textarea
-            value={resposta}
-            onChange={(e) => setResposta(e.target.value)}
-            placeholder="Digite sua resposta..."
-            className="w-full p-3 border rounded-lg resize-none h-32 mb-4"
-            maxLength={500}
-          />
-          <div className="flex gap-4">
+          {/* Formulário de Resposta */}
+          <form onSubmit={handleResponder} className="bg-white p-6 rounded-lg border border-gray-200">
+            <h2 className="font-semibold text-gray-900 mb-4">Responder Anonimamente:</h2>
+            <textarea
+              value={resposta}
+              onChange={(e) => setResposta(e.target.value)}
+              placeholder="Digite sua resposta..."
+              className="w-full p-3 border border-gray-300 rounded-lg resize-none h-32 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors duration-200"
+              maxLength={500}
+            />
             <button
               type="submit"
               disabled={enviando || !resposta.trim()}
-              className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 disabled:opacity-50"
+              className="mt-4 bg-gray-900 text-white px-6 py-3 rounded-lg hover:bg-gray-800 disabled:opacity-50 font-medium transition-colors duration-200"
             >
-              {enviando ? 'Enviando...' : (mensagem.response_text ? 'Atualizar Resposta' : 'Enviar Resposta')}
+              {enviando ? 'Enviando...' : 'Enviar Resposta'}
             </button>
-            <button
-              type="button"
-              onClick={() => router.push('/dashboard')}
-              className="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600"
-            >
-              Cancelar
-            </button>
-          </div>
-        </form>
+          </form>
 
-        {feedback && (
-          <div className={`mt-4 p-3 rounded-lg ${feedback.includes('sucesso') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-            {feedback}
+          {feedback && (
+            <div className={`mt-4 p-3 rounded-lg ${
+              feedback.includes('sucesso') 
+                ? 'bg-green-50 border border-green-200 text-green-800' 
+                : 'bg-red-50 border border-red-200 text-red-800'
+            } text-sm`}>
+              {feedback}
+            </div>
+          )}
+
+          <div className="mt-6 text-center">
+            <button
+              onClick={() => router.push('/dashboard')}
+              className="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors duration-200 font-medium"
+            >
+              Voltar ao Dashboard
+            </button>
           </div>
-        )}
+        </div>
       </div>
     </main>
   );

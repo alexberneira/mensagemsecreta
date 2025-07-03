@@ -62,54 +62,64 @@ export default function MensagemPage() {
   }
 
   return (
-    <main className="flex flex-col items-center min-h-screen p-4">
+    <main className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="w-full max-w-2xl">
-        <h1 className="text-2xl font-bold mb-6 text-center">
-          Sua Mensagem Anônima
-        </h1>
-
-        {/* Mensagem Original */}
-        <div className="bg-gray-50 p-6 rounded-lg mb-6">
-          <h2 className="font-semibold mb-2">Mensagem Enviada:</h2>
-          <p className="text-gray-700 whitespace-pre-wrap">{mensagem.content}</p>
-          <div className="text-sm text-gray-500 mt-2">
-            Enviada em: {new Date(mensagem.created_at).toLocaleString('pt-BR')}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+          <div className="text-center mb-8">
+            <h1 className="text-2xl font-semibold text-gray-900 mb-2">Sua Mensagem Anônima</h1>
           </div>
-        </div>
 
-        {/* Resposta */}
-        {mensagem.response_text ? (
-          <div className="bg-green-50 p-6 rounded-lg mb-6">
-            <h2 className="font-semibold mb-2 text-green-800">✅ Resposta Recebida:</h2>
-            <p className="text-gray-700 whitespace-pre-wrap">{mensagem.response_text}</p>
-            <div className="text-sm text-gray-500 mt-2">
-              Respondida em: {new Date(mensagem.updated_at || mensagem.created_at).toLocaleString('pt-BR')}
+          {/* Mensagem Original */}
+          <div className="bg-gray-50 p-6 rounded-lg mb-6">
+            <h2 className="font-semibold text-gray-900 mb-3">Mensagem Enviada:</h2>
+            <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">
+              {mensagem.content}
+            </p>
+            <div className="text-sm text-gray-500 mt-3">
+              Enviada em: {new Date(mensagem.created_at).toLocaleString('pt-BR')}
             </div>
           </div>
-        ) : (
-          <div className="bg-yellow-50 p-6 rounded-lg mb-6">
-            <h2 className="font-semibold mb-2 text-yellow-800">⏳ Aguardando Resposta</h2>
-            <p className="text-yellow-700">
-              Sua mensagem foi enviada com sucesso! 
-              O dono da caixa ainda não respondeu. 
-              Volte mais tarde para verificar se há uma resposta.
-            </p>
-          </div>
-        )}
 
-        {feedback && (
-          <div className={`mt-4 p-3 rounded-lg ${feedback.includes('sucesso') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-            {feedback}
-          </div>
-        )}
+          {/* Resposta */}
+          {mensagem.response_text ? (
+            <div className="bg-green-50 p-6 rounded-lg mb-6 border border-green-200">
+              <h2 className="font-semibold text-green-800 mb-3">✅ Resposta Recebida:</h2>
+              <p className="text-green-700 whitespace-pre-wrap leading-relaxed">
+                {mensagem.response_text}
+              </p>
+              <div className="text-sm text-green-600 mt-3">
+                Respondida em: {new Date(mensagem.updated_at || mensagem.created_at).toLocaleString('pt-BR')}
+              </div>
+            </div>
+          ) : (
+            <div className="bg-yellow-50 p-6 rounded-lg mb-6 border border-yellow-200">
+              <h2 className="font-semibold text-yellow-800 mb-3">⏳ Aguardando Resposta</h2>
+              <p className="text-yellow-700 leading-relaxed">
+                Sua mensagem foi enviada com sucesso! 
+                O dono da caixa ainda não respondeu. 
+                Volte mais tarde para verificar se há uma resposta.
+              </p>
+            </div>
+          )}
 
-        <div className="mt-6 text-center">
-          <button
-            onClick={() => window.location.reload()}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          >
-            Atualizar
-          </button>
+          {feedback && (
+            <div className={`mt-4 p-3 rounded-lg ${
+              feedback.includes('sucesso') 
+                ? 'bg-green-50 border border-green-200 text-green-800' 
+                : 'bg-red-50 border border-red-200 text-red-800'
+            } text-sm`}>
+              {feedback}
+            </div>
+          )}
+
+          <div className="mt-6 text-center">
+            <button
+              onClick={() => window.location.reload()}
+              className="bg-gray-900 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors duration-200 font-medium"
+            >
+              Atualizar
+            </button>
+          </div>
         </div>
       </div>
     </main>

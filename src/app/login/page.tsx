@@ -112,53 +112,72 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen p-4">
-      <h1 className="text-2xl font-bold mb-4">Login</h1>
-      <form onSubmit={handleLogin} className="flex flex-col gap-4 w-full max-w-xs">
-        <input
-          type="email"
-          placeholder="Seu e-mail"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          required
-          className={`border p-2 rounded ${email && !validarEmail(email) ? 'border-red-500' : ''}`}
-        />
-        {email && !validarEmail(email) && (
-          <span className="text-xs text-red-500">E-mail inválido</span>
-        )}
-        <input
-          type="password"
-          placeholder="Sua senha"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          required
-          className="border p-2 rounded"
-        />
-        <button
-          type="submit"
-          className="bg-blue-500 text-white rounded p-2 hover:bg-blue-600 disabled:opacity-50"
-          disabled={loading}
-        >
-          {loading ? 'Entrando...' : 'Entrar'}
-        </button>
-        {message && (
-          <div className={`text-center p-3 rounded-lg ${
-            message.includes('sucesso') 
-              ? 'bg-green-100 text-green-800 border border-green-300' 
-              : 'bg-red-100 text-red-800 border border-red-300'
-          }`}>
-            <p className="font-semibold">{message}</p>
+    <main className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+          <div className="text-center mb-8">
+            <h1 className="text-2xl font-semibold text-gray-900 mb-2">Entrar</h1>
+            <p className="text-gray-600 text-sm">Acesse sua caixa secreta</p>
           </div>
-        )}
-      </form>
-      <div className="mt-6 text-center">
-        <Link href="/register" className="text-blue-500 hover:text-blue-600 text-sm">
-          Não tem uma conta? Cadastre-se
-        </Link>
-        <div className="mt-2">
-          <Link href="/recuperar-senha" className="text-blue-500 hover:text-blue-600 text-sm">
-            Esqueci minha senha
-          </Link>
+          
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                E-mail
+              </label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors duration-200"
+                placeholder="Digite seu e-mail"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                Senha
+              </label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors duration-200"
+                placeholder="Digite sua senha"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gray-900 text-white p-3 rounded-lg hover:bg-gray-800 disabled:opacity-50 font-medium transition-colors duration-200"
+            >
+              {loading ? 'Entrando...' : 'Entrar'}
+            </button>
+          </form>
+
+          {message && (
+            <div className={`mt-4 p-3 rounded-lg ${
+              message.includes('sucesso') 
+                ? 'bg-green-100 text-green-800 border border-green-300' 
+                : 'bg-red-100 text-red-800 border border-red-300'
+            }`}>
+              <p className="font-semibold">{message}</p>
+            </div>
+          )}
+
+          <div className="mt-6 text-center space-y-2">
+            <Link href="/register" className="block text-gray-600 hover:text-gray-900 text-sm transition-colors duration-200">
+              Não tem uma conta? Cadastre-se
+            </Link>
+            <Link href="/recuperar-senha" className="block text-gray-600 hover:text-gray-900 text-sm transition-colors duration-200">
+              Esqueci minha senha
+            </Link>
+          </div>
         </div>
       </div>
     </main>
