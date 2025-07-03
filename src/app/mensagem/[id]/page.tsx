@@ -105,10 +105,10 @@ export default function MensagemPage() {
 
         <div className="mt-6 text-center">
           <button
-            onClick={() => router.push('/')}
+            onClick={() => window.location.reload()}
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           >
-            Voltar ao início
+            Atualizar
           </button>
         </div>
       </div>

@@ -20,6 +20,7 @@ export default function PublicInboxPage() {
   const [termos, setTermos] = useState(false);
   const [enviando, setEnviando] = useState(false);
   const [feedback, setFeedback] = useState<string | null>(null);
+  const [linkResposta, setLinkResposta] = useState<string | null>(null);
 
   // Limite de envio por IP (simples, localStorage)
   const podeEnviar = () => {
@@ -76,17 +77,42 @@ export default function PublicInboxPage() {
       } else {
         // Gera o link único para ver a resposta
         const responseLink = `${window.location.origin}/mensagem/${messageData.id}`;
+        setLinkResposta(responseLink);
         setFeedback(`Mensagem enviada com sucesso! 
         
 Para ver a resposta quando disponível, salve este link:
 ${responseLink}`);
         setMensagem('');
         localStorage.setItem('ultimaMsg_' + username, Date.now().toString());
+        
+        // Função para copiar o link
+        const copiarLink = async () => {
+          try {
+            await navigator.clipboard.writeText(responseLink);
+            setFeedback('Mensagem enviada com sucesso! Link copiado para a área de transferência! 📋');
+          } catch (err) {
+            setFeedback('Mensagem enviada com sucesso! Copie o link manualmente.');
+          }
+        };
+        
+        // Copia automaticamente o link
+        setTimeout(copiarLink, 100);
       }
     } catch (error) {
       setFeedback('Erro ao enviar mensagem.');
     }
     setEnviando(false);
+  };
+
+  const copiarLinkManual = async () => {
+    if (!linkResposta) return;
+    try {
+      await navigator.clipboard.writeText(linkResposta);
+      setFeedback('Link copiado para a área de transferência! 📋');
+      setTimeout(() => setFeedback(null), 2000);
+    } catch (err) {
+      setFeedback('Erro ao copiar link. Copie manualmente.');
+    }
   };
 
   return (
@@ -122,6 +148,16 @@ ${responseLink}`);
       {feedback && (
         <div className={`mt-4 p-3 rounded-lg ${feedback.includes('sucesso') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
           {feedback}
+          {linkResposta && feedback.includes('sucesso') && (
+            <div className="mt-3">
+              <button
+                onClick={copiarLinkManual}
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-sm"
+              >
+                📋 Copiar Link Novamente
+              </button>
+            </div>
+          )}
         </div>
       )}
       <div className="mt-8 text-center text-sm text-gray-600">
