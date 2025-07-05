@@ -17,7 +17,7 @@ export default function BotaoCopiarLink({ link }: BotaoCopiarLinkProps) {
   return (
     <button 
       onClick={copiar} 
-      className="bg-gray-900 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors duration-200 font-medium"
+      className="bg-gradient-to-r from-purple-600 to-pink-400 hover:from-purple-700 hover:to-pink-500 text-white px-4 py-2 rounded-md transition-colors duration-200 font-medium text-sm"
     >
       {copiado ? 'Link copiado!' : 'Copiar link da sua caixa anônima'}
     </button>

@@ -3,7 +3,7 @@
 // Não requer autenticação
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useParams } from 'next/navigation';
 
@@ -17,10 +17,11 @@ export default function PublicInboxPage() {
   console.log('PublicInboxPage - username recebido:', username);
   
   const [mensagem, setMensagem] = useState('');
-  const [termos, setTermos] = useState(false);
   const [enviando, setEnviando] = useState(false);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [linkResposta, setLinkResposta] = useState<string | null>(null);
+  const [mensagensCount, setMensagensCount] = useState<number | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
 
   // Limite de envio por IP (simples, localStorage)
   const podeEnviar = () => {
@@ -34,10 +35,6 @@ export default function PublicInboxPage() {
     e.preventDefault();
     if (!mensagem.trim()) {
       setFeedback('Digite uma mensagem.');
-      return;
-    }
-    if (!termos) {
-      setFeedback('Você deve aceitar os termos de uso.');
       return;
     }
     if (contemPalavraProibida(mensagem)) {
@@ -115,64 +112,82 @@ ${responseLink}`);
     }
   };
 
+  useEffect(() => {
+    const fetchUserAndCount = async () => {
+      // Busca o usuário pelo username
+      const { data: user } = await supabase
+        .from('users')
+        .select('id')
+        .eq('username', username)
+        .single();
+      if (user && user.id) {
+        setUserId(user.id);
+        // Busca a contagem de mensagens
+        const { count } = await supabase
+          .from('messages')
+          .select('id', { count: 'exact', head: true })
+          .eq('user_id', user.id);
+        setMensagensCount(count ?? 0);
+      }
+    };
+    fetchUserAndCount();
+  }, [username]);
+
   return (
-    <main className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
-          <div className="text-center mb-8">
-            <h1 className="text-2xl font-semibold text-gray-900 mb-2">Enviar mensagem anônima</h1>
-            <p className="text-gray-600 text-sm">Para @{username}</p>
+    <main className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-2 sm:p-4">
+      <div className="w-full max-w-md sm:max-w-md mx-auto">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-8">
+          {/* Topo do card: avatar, username e convite */}
+          <div className="flex flex-col items-center mb-6 sm:mb-8">
+            <div className="w-14 h-14 rounded-full bg-gray-200 flex items-center justify-center mb-2">
+              {/* Ícone de usuário padrão (SVG) */}
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-gray-400">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9A3.75 3.75 0 1 1 8.25 9a3.75 3.75 0 0 1 7.5 0ZM4.5 19.25a7.25 7.25 0 0 1 15 0v.25a.75.75 0 0 1-.75.75h-13.5a.75.75 0 0 1-.75-.75v-.25Z" />
+              </svg>
+            </div>
+            <div className="text-gray-900 font-semibold text-base sm:text-lg">@{username}</div>
+            <div className="text-black font-bold text-sm sm:text-base mt-1 text-center">me mande mensagens anônimas!</div>
+            {typeof mensagensCount === 'number' && (
+              <div className="mt-2 text-xs sm:text-sm text-gray-700 font-medium text-center">
+                <span className="text-black">{mensagensCount}</span> mensagem{mensagensCount === 1 ? '' : 's'} já recebida{mensagensCount === 1 ? '' : 's'}!
+              </div>
+            )}
           </div>
-          
-          <form onSubmit={handleEnviar} className="space-y-4">
+          {/* Fim do topo do card */}
+          <form onSubmit={handleEnviar} className="space-y-3 sm:space-y-4">
             <div>
-              <label htmlFor="mensagem" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="mensagem" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
                 Mensagem
               </label>
               <textarea
                 id="mensagem"
-                placeholder="Digite sua mensagem..."
+                placeholder="Ex: és solteiro? (ou envie qualquer pergunta anônima)"
                 value={mensagem}
                 onChange={(e) => setMensagem(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg resize-none h-32 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors duration-200"
+                className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg resize-none h-24 sm:h-32 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors duration-200 text-base sm:text-lg font-sans text-purple-700 placeholder-gray-400"
                 maxLength={500}
               />
             </div>
-            
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                id="termos"
-                checked={termos}
-                onChange={(e) => setTermos(e.target.checked)}
-                className="rounded border-gray-300 focus:ring-gray-500"
-              />
-              <label htmlFor="termos" className="text-sm text-gray-700">
-                Aceito os termos de uso e política de privacidade
-              </label>
-            </div>
-            
             <button
               type="submit"
               disabled={enviando}
-              className="w-full bg-gray-900 text-white p-3 rounded-lg hover:bg-gray-800 disabled:opacity-50 font-medium transition-colors duration-200"
+              className="w-full bg-gradient-to-r from-purple-600 to-pink-400 hover:from-purple-700 hover:to-pink-500 text-white p-2 sm:p-3 rounded-lg disabled:opacity-50 font-medium transition-colors duration-200 text-sm sm:text-base"
             >
               {enviando ? 'Enviando...' : 'Enviar Mensagem Anônima'}
             </button>
           </form>
-          
           {feedback && (
-            <div className={`mt-4 p-3 rounded-lg ${
+            <div className={`mt-4 p-2 sm:p-3 rounded-lg ${
               feedback.includes('sucesso') 
                 ? 'bg-green-50 border border-green-200 text-green-800' 
                 : 'bg-red-50 border border-red-200 text-red-800'
-            } text-sm`}>
+            } text-xs sm:text-sm`}>
               {feedback}
               {linkResposta && feedback.includes('sucesso') && (
                 <div className="mt-3">
                   <button
                     onClick={copiarLinkManual}
-                    className="bg-gray-900 text-white px-4 py-2 rounded hover:bg-gray-800 transition-colors duration-200 text-xs"
+                    className="bg-gray-100 text-gray-700 border border-gray-300 px-3 py-1 rounded hover:bg-gray-200 transition-colors duration-200 text-xs font-normal shadow-none"
                   >
                     Copiar Link Novamente
                   </button>
@@ -180,13 +195,36 @@ ${responseLink}`);
               )}
             </div>
           )}
-          
-          <div className="mt-8 text-center space-y-2 text-xs text-gray-600">
-            <p>• Sua mensagem é completamente anônima</p>
+          <div className="mt-6 sm:mt-8 text-center space-y-1 sm:space-y-2 text-xs text-gray-600">
             <p>• Nenhum dado pessoal é coletado</p>
             <p>• Respeite os outros usuários</p>
           </div>
+          {/* Microcopy de privacidade */}
+          <div className="flex flex-col items-center mt-3 sm:mt-4 mb-2">
+            <div className="flex items-center gap-1 text-gray-700 text-xs sm:text-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 text-gray-700">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V7.5a4.5 4.5 0 10-9 0v3m12 0v7.125A2.625 2.625 0 0116.875 20.25h-9.75A2.625 2.625 0 014.5 17.625V10.5h15z" />
+              </svg>
+              perguntas e respostas anônimas
+            </div>
+          </div>
         </div>
+        {/* CTA para criar conta */}
+        <div className="w-full flex flex-col items-center my-6">
+          <div className="text-center text-sm sm:text-base font-medium text-gray-800 mb-2">
+            Quer receber mensagens anônimas também?
+          </div>
+          <a href="/register" className="inline-block bg-gradient-to-r from-purple-600 to-pink-400 hover:from-purple-700 hover:to-pink-500 text-white px-5 py-2 rounded-lg font-semibold text-sm sm:text-base shadow transition-colors duration-200">
+            Quero meu link secreto!
+          </a>
+        </div>
+        {/* Footer com links para Termos e Privacidade */}
+        <footer className="w-full flex justify-center items-center py-4 mt-4 sm:mt-8">
+          <div className="text-xs text-gray-500 space-x-4">
+            <a href="/termos" className="hover:underline">Termos</a>
+            <a href="/privacidade" className="hover:underline">Privacidade</a>
+          </div>
+        </footer>
       </div>
     </main>
   );

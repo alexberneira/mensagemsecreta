@@ -16,6 +16,7 @@ export default function DashboardPage() {
   const [mensagens, setMensagens] = useState<any[]>([]);
   const [carregando, setCarregando] = useState(true);
   const [feedback, setFeedback] = useState<string | null>(null);
+  const [feedbacksCard, setFeedbacksCard] = useState<{ [id: string]: string | null }>({});
   const [username, setUsername] = useState('');
   const [ultimaAtualizacao, setUltimaAtualizacao] = useState<Date>(new Date());
 
@@ -78,18 +79,6 @@ export default function DashboardPage() {
     fetchData();
   }, [user]);
 
-  // Atualização automática a cada 30 segundos
-  useEffect(() => {
-    if (!user) return;
-
-    const interval = setInterval(() => {
-      console.log('Dashboard - atualização automática...');
-      fetchData();
-    }, 30000); // 30 segundos
-
-    return () => clearInterval(interval);
-  }, [user, mensagens.length]);
-
   // Função de logout
   const handleLogout = async () => {
     await signOut();
@@ -105,16 +94,12 @@ export default function DashboardPage() {
   };
 
   // Ações dos cards
-  const copiarMensagem = (conteudo: string) => {
+  const copiarMensagem = (id: string, conteudo: string) => {
     navigator.clipboard.writeText(conteudo);
-    setFeedback('Mensagem copiada!');
-    setTimeout(() => setFeedback(null), 1500);
+    setFeedbacksCard((prev) => ({ ...prev, [id]: 'Mensagem copiada!' }));
+    setTimeout(() => setFeedbacksCard((prev) => ({ ...prev, [id]: null })), 1500);
   };
-  const repostarMensagem = (conteudo: string) => {
-    // Simula repostar (pode abrir modal ou compartilhar)
-    setFeedback('Função de repostar em breve!');
-    setTimeout(() => setFeedback(null), 1500);
-  };
+
   const denunciarMensagem = (id: string) => {
     // Simula denúncia (pode marcar no banco ou enviar alerta)
     setFeedback('Mensagem denunciada!');
@@ -140,9 +125,13 @@ export default function DashboardPage() {
             </div>
             <button
               onClick={handleLogout}
-              className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors duration-200 font-medium text-sm"
+              title="Sair"
+              className="flex items-center gap-1 p-2 rounded-md hover:bg-gray-100 transition-colors duration-200 text-xs text-gray-600"
             >
-              Sair
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 text-gray-500">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M18 12h-9m0 0l3-3m-3 3l3 3" />
+              </svg>
+              <span>Sair</span>
             </button>
           </div>
         </div>
@@ -156,7 +145,7 @@ export default function DashboardPage() {
             </div>
             <button
               onClick={handleAtualizar}
-              className="bg-gray-900 text-white px-3 py-1.5 rounded-md hover:bg-gray-800 transition-colors duration-200 font-medium text-sm"
+              className="bg-gradient-to-r from-purple-600 to-pink-400 hover:from-purple-700 hover:to-pink-500 text-white px-3 py-1.5 rounded-md transition-colors duration-200 font-medium text-sm"
             >
               Atualizar
             </button>
@@ -202,10 +191,12 @@ export default function DashboardPage() {
                 conteudo={msg.content}
                 status={msg.status || 'nova'}
                 resposta={msg.response_text}
-                onCopiar={() => copiarMensagem(msg.content)}
-                onRepostar={() => repostarMensagem(msg.content)}
+                onCopiar={() => copiarMensagem(msg.id, msg.content)}
+                onRepostar={() => {}}
                 onDenunciar={() => denunciarMensagem(msg.id)}
                 onResponder={() => responderMensagem(msg.id)}
+                feedback={feedbacksCard[msg.id]}
+                username={username}
               />
             ))
           )}

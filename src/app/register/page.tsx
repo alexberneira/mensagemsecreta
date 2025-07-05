@@ -154,7 +154,8 @@ export default function RegisterPage() {
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
           <div className="text-center mb-8">
             <h1 className="text-2xl font-semibold text-gray-900 mb-2">Criar Conta</h1>
-            <p className="text-gray-600 text-sm">Crie sua caixa secreta</p>
+            <p className="text-purple-700 text-lg font-semibold mb-2">Descubra o que pensam sobre você.</p>
+            <p className="text-gray-600 text-sm">Cadastre-se grátis, personalize seu link e comece a receber mensagens anônimas agora mesmo!</p>
           </div>
           
           <form onSubmit={handleRegister} className="space-y-4">
@@ -208,9 +209,9 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gray-900 text-white p-3 rounded-lg hover:bg-gray-800 disabled:opacity-50 font-medium transition-colors duration-200"
+              className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white p-3 rounded-lg font-medium hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50"
             >
-              {loading ? 'Criando conta...' : 'Criar Conta'}
+              {loading ? 'Criando conta...' : 'Criar minha caixa secreta'}
             </button>
           </form>
 
