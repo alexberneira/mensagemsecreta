@@ -50,7 +50,7 @@ const CardMemeGenerator = ({ message, response, username, onClose }: CardMemeGen
     try {
       const canvas = await html2canvas(cardRef.current, {
         width: 1080,
-        height: 1080,
+        height: 800,
         scale: 2, // Melhor qualidade
         backgroundColor: 'transparent',
         useCORS: true,
@@ -94,121 +94,109 @@ const CardMemeGenerator = ({ message, response, username, onClose }: CardMemeGen
     }
   };
 
-  // Card visual (preview)
+  // Card visual (preview) - igual ao CardMensagem
   const CardVisual = ({ message, response, username, randomPhrase }: { message: string, response?: string, username: string, randomPhrase: string }) => (
     <div
       style={{
-        width: '360px',
-        height: '360px',
-        borderRadius: '16px',
-        padding: '10px',
+        width: '400px',
+        height: 'auto',
+        minHeight: '300px',
+        borderRadius: '12px',
+        padding: '24px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
         position: 'relative',
         overflow: 'hidden',
-        background: '#111111',
+        background: 'linear-gradient(135deg, #f3e8ff 0%, #fce7f3 50%, #ffffff 100%)',
         boxSizing: 'border-box',
+        border: '1px solid #e5e7eb',
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
       }}
     >
-      {/* Cabeçalho */}
-      <div style={{ textAlign: 'center', marginBottom: '8px' }}>
-        <div style={{ fontSize: '22px', fontWeight: 'bold', color: 'white', marginBottom: '16px', letterSpacing: '1px', lineHeight: '1.2' }}>
-          inboxsecreta.com
+      {/* Header com numeração */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <span style={{ color: '#6b7280', fontSize: '16px', fontWeight: 'bold' }}>#1</span>
+          <div style={{ 
+            padding: '6px 12px', 
+            borderRadius: '9999px', 
+            border: '1px solid #bbf7d0', 
+            fontSize: '14px', 
+            fontWeight: '600',
+            backgroundColor: '#f0fdf4',
+            color: '#166534'
+          }}>
+            <span style={{ textTransform: 'capitalize' }}>respondida</span>
+          </div>
         </div>
-        <div style={{ width: '100%', height: '2px', backgroundColor: 'white', opacity: 0.3 }}></div>
       </div>
-      {/* Mensagem Principal */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '0' }}>
+
+      {/* Conteúdo da mensagem */}
+      <div style={{ marginBottom: '16px' }}>
         <div style={{
-          backgroundColor: 'rgba(255, 255, 255, 0.93)',
-          borderRadius: '12px',
-          padding: '8px 12px',
-          marginBottom: response ? '8px' : '0',
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.10)',
-          maxWidth: '270px',
-          width: '100%',
-          overflow: 'hidden',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          color: '#111827',
+          lineHeight: '1.6',
+          whiteSpace: 'pre-wrap',
+          fontSize: '16px',
+          fontWeight: 'bold',
+          wordBreak: 'break-word',
+          width: '100%'
         }}>
-          <div style={{
-            fontSize: '15px',
-            fontWeight: '500',
-            color: '#1f2937',
-            wordBreak: 'break-word',
-            textAlign: 'center',
-            lineHeight: 1.2,
-            whiteSpace: 'pre-line',
-            width: '100%',
-          }}>
-            💬 {message}
-          </div>
+          {message}
         </div>
-        {/* Resposta (se houver) */}
-        {response && (
-          <div style={{
-            backgroundColor: 'rgba(255, 255, 255, 0.85)',
-            borderRadius: '8px',
-            padding: '10px',
-            boxShadow: '0 1px 4px rgba(0, 0, 0, 0.08)',
-            maxWidth: '220px',
-            width: '100%',
-            marginTop: '6px',
-            marginBottom: '0',
-            overflow: 'hidden',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}>
-            <div style={{ fontSize: '10px', color: '#6b7280', marginBottom: '3px', fontWeight: 600 }}>
-              🗨️ Resposta:
-            </div>
-            <div style={{
-              fontSize: '12px',
-              color: '#1f2937',
-              wordBreak: 'break-word',
-              textAlign: 'center',
-              lineHeight: 1.2,
-              whiteSpace: 'pre-line',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              display: '-webkit-box',
-              WebkitLineClamp: 3,
-              WebkitBoxOrient: 'vertical',
-              maxHeight: '36px',
-            }}>
-              💭 {truncateText(response, 60)}
-            </div>
-          </div>
-        )}
       </div>
-      {/* Rodapé */}
-      <div style={{ textAlign: 'center', marginTop: '4px', minHeight: '30px' }}>
-        <div style={{ width: '100%', height: '2px', backgroundColor: 'white', opacity: 0.3, marginBottom: '2px' }}></div>
-        <div style={{ fontSize: '13px', fontWeight: 'bold', color: 'white', marginBottom: '2px' }}>
-          🔥 100% ANÔNIMO
+
+      {/* Resposta */}
+      {response && (
+        <div style={{ 
+          marginBottom: '16px', 
+          padding: '16px', 
+          background: 'linear-gradient(90deg, #f0fdf4 0%, #ecfdf5 100%)', 
+          borderRadius: '8px', 
+          border: '1px solid #bbf7d0' 
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+            <span style={{ fontWeight: 'bold', color: '#166534', fontSize: '14px' }}>🗨️ Resposta</span>
+          </div>
+          <div style={{
+            color: '#1f2937',
+            lineHeight: '1.6',
+            whiteSpace: 'pre-wrap',
+            fontSize: '16px',
+            fontWeight: '500',
+            wordBreak: 'break-word'
+          }}>
+            {response}
+          </div>
         </div>
-        <div style={{ fontSize: '10px', color: 'white', opacity: 0.95, marginBottom: '1px', fontWeight: 500 }}>
-          📱 {randomPhrase}
-        </div>
-        <div style={{ fontSize: '10px', color: 'white', opacity: 0.9, fontWeight: 500 }}>
-          inboxsecreta.com
-        </div>
+      )}
+
+      {/* Rodapé com domínio */}
+      <div style={{ 
+        textAlign: 'center', 
+        marginTop: '16px', 
+        paddingTop: '12px', 
+        borderTop: '1px solid #e5e7eb',
+        color: '#6b7280',
+        fontSize: '12px',
+        fontWeight: '500'
+      }}>
+        inboxsecreta.com
       </div>
     </div>
   );
 
-  // Card invisível (para captura)
+  // Card invisível (para captura) - igual ao CardMensagem
   const CardHidden = ({ message, response, username, randomPhrase }: { message: string, response?: string, username: string, randomPhrase: string }) => (
     <div
       ref={cardRef}
       style={{
         width: '1080px',
-        height: '1080px',
-        borderRadius: '40px',
-        padding: '30px',
+        height: 'auto',
+        minHeight: '800px',
+        borderRadius: '32px',
+        padding: '64px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
@@ -216,91 +204,82 @@ const CardMemeGenerator = ({ message, response, username, onClose }: CardMemeGen
         left: '-9999px',
         top: 0,
         overflow: 'hidden',
-        background: '#111111',
+        background: 'linear-gradient(135deg, #f3e8ff 0%, #fce7f3 50%, #ffffff 100%)',
         boxSizing: 'border-box',
         zIndex: -1,
+        border: '2px solid #e5e7eb',
+        boxShadow: '0 8px 32px -1px rgba(0, 0, 0, 0.1)',
       }}
     >
-      {/* Cabeçalho */}
-      <div style={{ textAlign: 'center', marginBottom: '16px' }}>
-        <div style={{ fontSize: '64px', fontWeight: 'bold', color: 'white', marginBottom: '20px', letterSpacing: '1px', lineHeight: '1.2' }}>
-          inboxsecreta.com
+      {/* Header com numeração */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '32px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+          <span style={{ color: '#6b7280', fontSize: '32px', fontWeight: 'bold' }}>#1</span>
+          <div style={{ 
+            padding: '12px 24px', 
+            borderRadius: '9999px', 
+            border: '2px solid #bbf7d0', 
+            fontSize: '28px', 
+            fontWeight: '600',
+            backgroundColor: '#f0fdf4',
+            color: '#166534'
+          }}>
+            <span style={{ textTransform: 'capitalize' }}>respondida</span>
+          </div>
         </div>
-        <div style={{ width: '100%', height: '3px', backgroundColor: 'white', opacity: 0.3 }}></div>
       </div>
-      {/* Mensagem Principal */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '0' }}>
+
+      {/* Conteúdo da mensagem */}
+      <div style={{ marginBottom: '32px' }}>
         <div style={{
-          backgroundColor: 'rgba(255, 255, 255, 0.93)',
-          borderRadius: '32px',
-          padding: '18px 32px',
-          marginBottom: response ? '16px' : '0',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.10)',
-          maxWidth: '800px',
-          width: '100%',
-          overflow: 'hidden',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          color: '#111827',
+          lineHeight: '1.6',
+          whiteSpace: 'pre-wrap',
+          fontSize: '32px',
+          fontWeight: 'bold',
+          wordBreak: 'break-word',
+          width: '100%'
         }}>
-          <div style={{
-            fontSize: '44px',
-            fontWeight: '500',
-            color: '#1f2937',
-            wordBreak: 'break-word',
-            textAlign: 'center',
-            lineHeight: 1.2,
-            whiteSpace: 'pre-line',
-            width: '100%',
-          }}>
-            💬 {message}
-          </div>
+          {message}
         </div>
-        {/* Resposta (se houver) */}
-        {response && (
-          <div style={{
-            backgroundColor: 'rgba(255, 255, 255, 0.85)',
-            borderRadius: '24px',
-            padding: '32px',
-            boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
-            maxWidth: '700px',
-            width: '100%',
-            marginTop: '16px',
-            marginBottom: '0',
-            overflow: 'hidden',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}>
-            <div style={{ fontSize: '28px', color: '#6b7280', marginBottom: '8px', fontWeight: 600 }}>
-              🗨️ Resposta:
-            </div>
-            <div style={{
-              fontSize: '32px',
-              color: '#1f2937',
-              wordBreak: 'break-word',
-              textAlign: 'center',
-              lineHeight: 1.2,
-              whiteSpace: 'pre-line',
-              width: '100%',
-            }}>
-              💭 {response}
-            </div>
-          </div>
-        )}
       </div>
-      {/* Rodapé */}
-      <div style={{ textAlign: 'center', marginTop: '8px', minHeight: '80px' }}>
-        <div style={{ width: '100%', height: '3px', backgroundColor: 'white', opacity: 0.3, marginBottom: '4px' }}></div>
-        <div style={{ fontSize: '36px', fontWeight: 'bold', color: 'white', marginBottom: '4px' }}>
-          🔥 100% ANÔNIMO
+
+      {/* Resposta */}
+      {response && (
+        <div style={{ 
+          marginBottom: '32px', 
+          padding: '32px', 
+          background: 'linear-gradient(90deg, #f0fdf4 0%, #ecfdf5 100%)', 
+          borderRadius: '16px', 
+          border: '2px solid #bbf7d0' 
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
+            <span style={{ fontWeight: 'bold', color: '#166534', fontSize: '28px' }}>🗨️ Resposta</span>
+          </div>
+          <div style={{
+            color: '#1f2937',
+            lineHeight: '1.6',
+            whiteSpace: 'pre-wrap',
+            fontSize: '28px',
+            fontWeight: '500',
+            wordBreak: 'break-word'
+          }}>
+            {response}
+          </div>
         </div>
-        <div style={{ fontSize: '28px', color: 'white', opacity: 0.95, marginBottom: '2px', fontWeight: 500 }}>
-          📱 {randomPhrase}
-        </div>
-        <div style={{ fontSize: '28px', color: 'white', opacity: 0.9, fontWeight: 500 }}>
-          inboxsecreta.com
-        </div>
+      )}
+
+      {/* Rodapé com domínio */}
+      <div style={{ 
+        textAlign: 'center', 
+        marginTop: '32px', 
+        paddingTop: '24px', 
+        borderTop: '2px solid #e5e7eb',
+        color: '#6b7280',
+        fontSize: '24px',
+        fontWeight: '500'
+      }}>
+        inboxsecreta.com
       </div>
     </div>
   );
@@ -345,19 +324,19 @@ const CardMemeGenerator = ({ message, response, username, onClose }: CardMemeGen
               </div>
 
               {/* Botões de ação */}
-              <div className="flex flex-wrap justify-center gap-3">
+              <div className="flex flex-wrap justify-center gap-1.5">
                 <button
                   onClick={downloadImage}
-                  className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-5 py-2 rounded-lg font-medium hover:from-blue-600 hover:to-cyan-600 transition-all text-base"
+                  className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-2.5 py-1 rounded-md font-medium hover:from-blue-600 hover:to-cyan-600 transition-all text-xs"
                 >
-                  📥 Baixar Imagem
+                  📥 Baixar
                 </button>
                 
                 <button
                   onClick={copyToClipboard}
-                  className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-5 py-2 rounded-lg font-medium hover:from-green-600 hover:to-emerald-600 transition-all text-base"
+                  className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-2.5 py-1 rounded-md font-medium hover:from-green-600 hover:to-emerald-600 transition-all text-xs"
                 >
-                  📋 Copiar Imagem
+                  📋 Copiar
                 </button>
 
                 <button
@@ -387,7 +366,7 @@ const CardMemeGenerator = ({ message, response, username, onClose }: CardMemeGen
                       alert('📱 No celular: Baixe a imagem e compartilhe nos Stories do Instagram!\n\n💡 Dica: Use o botão "Compartilhar" do seu celular e selecione Instagram Stories.');
                     }
                   }}
-                  className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-5 py-2 rounded-lg font-medium hover:from-pink-600 hover:to-purple-600 transition-all text-base"
+                  className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-2.5 py-1 rounded-md font-medium hover:from-pink-600 hover:to-purple-600 transition-all text-xs"
                 >
                   📱 Compartilhar
                 </button>
