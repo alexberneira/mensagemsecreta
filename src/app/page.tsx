@@ -1,8 +1,44 @@
 import Link from 'next/link';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Inbox Secreta - Receba Mensagens Anônimas | 100% Seguro e Divertido",
+  description: "Receba mensagens anônimas, confissões e elogios de forma segura. Crie sua caixa secreta gratuita e descubra o que as pessoas realmente pensam sobre você!",
+  keywords: "mensagens anônimas, confissões anônimas, inbox secreta, perguntas anônimas, elogios anônimos, segredos, anônimo, viral",
+  openGraph: {
+    title: "Inbox Secreta - Receba Mensagens Anônimas",
+    description: "Receba mensagens anônimas, confissões e elogios de forma segura. Descubra o que as pessoas realmente pensam sobre você!",
+    type: 'website',
+    locale: 'pt_BR',
+  },
+};
 
 export default function HomePage() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Inbox Secreta",
+    "description": "Receba mensagens anônimas, confissões e elogios de forma segura e divertida",
+    "url": "https://inboxsecreta.com",
+    "applicationCategory": "SocialNetworkingApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "BRL"
+    },
+    "creator": {
+      "@type": "Organization",
+      "name": "Inbox Secreta"
+    }
+  };
+
   return (
     <main className="min-h-screen bg-gray-50">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Header */}
       <div className="bg-white shadow-sm border-b border-gray-100">
         <div className="max-w-4xl mx-auto px-4 py-6">
