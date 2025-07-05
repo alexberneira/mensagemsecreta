@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import html2canvas from 'html2canvas';
 
 interface CardMemeGeneratorProps {
@@ -11,7 +11,7 @@ interface CardMemeGeneratorProps {
 }
 
 const CardMemeGenerator = ({ message, response, username, onClose }: CardMemeGeneratorProps) => {
-  const [isGenerating, setIsGenerating] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(true);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -25,6 +25,17 @@ const CardMemeGenerator = ({ message, response, username, onClose }: CardMemeGen
   ];
 
   const randomPhrase = memePhrases[Math.floor(Math.random() * memePhrases.length)];
+
+  // Gerar card automaticamente quando o componente for montado
+  useEffect(() => {
+    const autoGenerate = async () => {
+      // Pequeno delay para garantir que o DOM esteja renderizado
+      setTimeout(() => {
+        generateCard();
+      }, 100);
+    };
+    autoGenerate();
+  }, []);
 
   // Função para truncar texto muito longo
   const truncateText = (text: string, maxLength: number = 150) => {
@@ -41,13 +52,13 @@ const CardMemeGenerator = ({ message, response, username, onClose }: CardMemeGen
         width: 1080,
         height: 1080,
         scale: 2, // Melhor qualidade
-        backgroundColor: '#ffffff',
+        backgroundColor: 'transparent',
         useCORS: true,
         allowTaint: true,
         foreignObjectRendering: false,
       });
       
-      const imageUrl = canvas.toDataURL('image/png');
+      const imageUrl = canvas.toDataURL('image/png', 1.0);
       setGeneratedImage(imageUrl);
     } catch (error) {
       console.error('Erro ao gerar card:', error);
@@ -101,9 +112,9 @@ const CardMemeGenerator = ({ message, response, username, onClose }: CardMemeGen
       }}
     >
       {/* Cabeçalho */}
-      <div style={{ textAlign: 'center', marginBottom: '4px' }}>
-        <div style={{ fontSize: '22px', fontWeight: 'bold', color: 'white', marginBottom: '2px', letterSpacing: '1px' }}>
-          🔒 INBOX SECRETA
+      <div style={{ textAlign: 'center', marginBottom: '8px' }}>
+        <div style={{ fontSize: '22px', fontWeight: 'bold', color: 'white', marginBottom: '16px', letterSpacing: '1px', lineHeight: '1.2' }}>
+          inboxsecreta.com
         </div>
         <div style={{ width: '100%', height: '2px', backgroundColor: 'white', opacity: 0.3 }}></div>
       </div>
@@ -183,7 +194,7 @@ const CardMemeGenerator = ({ message, response, username, onClose }: CardMemeGen
           📱 {randomPhrase}
         </div>
         <div style={{ fontSize: '10px', color: 'white', opacity: 0.9, fontWeight: 500 }}>
-          inboxsecreta.com/{username}
+          inboxsecreta.com
         </div>
       </div>
     </div>
@@ -211,9 +222,9 @@ const CardMemeGenerator = ({ message, response, username, onClose }: CardMemeGen
       }}
     >
       {/* Cabeçalho */}
-      <div style={{ textAlign: 'center', marginBottom: '12px' }}>
-        <div style={{ fontSize: '64px', fontWeight: 'bold', color: 'white', marginBottom: '4px', letterSpacing: '1px' }}>
-          🔒 INBOX SECRETA
+      <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+        <div style={{ fontSize: '64px', fontWeight: 'bold', color: 'white', marginBottom: '20px', letterSpacing: '1px', lineHeight: '1.2' }}>
+          inboxsecreta.com
         </div>
         <div style={{ width: '100%', height: '3px', backgroundColor: 'white', opacity: 0.3 }}></div>
       </div>
@@ -288,7 +299,7 @@ const CardMemeGenerator = ({ message, response, username, onClose }: CardMemeGen
           📱 {randomPhrase}
         </div>
         <div style={{ fontSize: '28px', color: 'white', opacity: 0.9, fontWeight: 500 }}>
-          inboxsecreta.com/{username}
+          inboxsecreta.com
         </div>
       </div>
     </div>
@@ -299,7 +310,7 @@ const CardMemeGenerator = ({ message, response, username, onClose }: CardMemeGen
       <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-800">Gerar Card para Instagram</h2>
+            <h2 className="text-2xl font-bold text-gray-800">🚀 Viralize nos Stories!</h2>
             <button
               onClick={onClose}
               className="text-gray-500 hover:text-gray-700 text-2xl"
@@ -308,35 +319,29 @@ const CardMemeGenerator = ({ message, response, username, onClose }: CardMemeGen
             </button>
           </div>
 
-          {!generatedImage ? (
+          {isGenerating ? (
             <div className="space-y-6">
-              {/* Preview do card */}
-              <div className="flex justify-center">
-                <CardVisual message={message} response={response} username={username} randomPhrase={randomPhrase} />
-                {/* Card invisível para captura */}
-                <CardHidden message={message} response={response} username={username} randomPhrase={randomPhrase} />
+              {/* Loading */}
+              <div className="flex justify-center items-center py-12">
+                <div className="text-center">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
+                  <p className="text-gray-600">Gerando seu card...</p>
+                </div>
               </div>
-
-              {/* Botão de gerar */}
-              <div className="flex justify-center">
-                <button
-                  onClick={generateCard}
-                  disabled={isGenerating}
-                  className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-3 rounded-lg font-medium hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50"
-                >
-                  {isGenerating ? 'Gerando...' : 'Gerar Card'}
-                </button>
-              </div>
+              {/* Card invisível para captura */}
+              <CardHidden message={message} response={response} username={username} randomPhrase={randomPhrase} />
             </div>
           ) : (
             <div className="space-y-6">
               {/* Imagem gerada */}
               <div className="flex justify-center">
-                <img
-                  src={generatedImage}
-                  alt="Card gerado"
-                  className="max-w-full h-auto rounded-lg shadow-lg"
-                />
+                {generatedImage && (
+                  <img
+                    src={generatedImage}
+                    alt="Card gerado"
+                    className="max-w-full h-auto rounded-lg shadow-lg"
+                  />
+                )}
               </div>
 
               {/* Botões de ação */}
@@ -359,7 +364,7 @@ const CardMemeGenerator = ({ message, response, username, onClose }: CardMemeGen
                   onClick={async () => {
                     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
                     
-                    if (isMobile && navigator.share) {
+                    if (isMobile && navigator.share && generatedImage) {
                       try {
                         // Converter data URL para blob
                         const response = await fetch(generatedImage);
@@ -374,11 +379,11 @@ const CardMemeGenerator = ({ message, response, username, onClose }: CardMemeGen
                       } catch (error) {
                         console.error('Erro ao compartilhar:', error);
                         // Fallback para download
-                        downloadImage();
+                        if (generatedImage) downloadImage();
                       }
                     } else {
                       // No desktop ou quando Web Share API não está disponível
-                      downloadImage();
+                      if (generatedImage) downloadImage();
                       alert('📱 No celular: Baixe a imagem e compartilhe nos Stories do Instagram!\n\n💡 Dica: Use o botão "Compartilhar" do seu celular e selecione Instagram Stories.');
                     }
                   }}
