@@ -340,26 +340,73 @@ const CardMemeGenerator = ({ message, response, username, onClose }: CardMemeGen
               </div>
 
               {/* Botões de ação */}
-              <div className="flex justify-center">
+              <div className="flex flex-wrap justify-center gap-3">
                 <button
-                  onClick={() => {
+                  onClick={downloadImage}
+                  className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-5 py-2 rounded-lg font-medium hover:from-blue-600 hover:to-cyan-600 transition-all text-base"
+                >
+                  📥 Baixar Imagem
+                </button>
+                
+                <button
+                  onClick={copyToClipboard}
+                  className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-5 py-2 rounded-lg font-medium hover:from-green-600 hover:to-emerald-600 transition-all text-base"
+                >
+                  📋 Copiar Imagem
+                </button>
+
+                <button
+                  onClick={async () => {
                     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-                    if (isMobile) {
-                      window.location.href = 'instagram://story-camera';
+                    
+                    if (isMobile && navigator.share) {
+                      try {
+                        // Converter data URL para blob
+                        const response = await fetch(generatedImage);
+                        const blob = await response.blob();
+                        const file = new File([blob], 'inbox-secreta.png', { type: 'image/png' });
+                        
+                        await navigator.share({
+                          title: 'Inbox Secreta',
+                          text: 'Confira minha mensagem anônima! 🔒',
+                          files: [file]
+                        });
+                      } catch (error) {
+                        console.error('Erro ao compartilhar:', error);
+                        // Fallback para download
+                        downloadImage();
+                      }
                     } else {
-                      alert('No computador, baixe a imagem e compartilhe manualmente nos Stories do Instagram pelo seu celular.');
+                      // No desktop ou quando Web Share API não está disponível
+                      downloadImage();
+                      alert('📱 No celular: Baixe a imagem e compartilhe nos Stories do Instagram!\n\n💡 Dica: Use o botão "Compartilhar" do seu celular e selecione Instagram Stories.');
                     }
                   }}
                   className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-5 py-2 rounded-lg font-medium hover:from-pink-600 hover:to-purple-600 transition-all text-base"
                 >
-                  Compartilhar no Instagram
+                  📱 Compartilhar
                 </button>
               </div>
 
               {/* Instruções */}
-              <div className="text-center text-sm text-gray-600 mt-4">
-                <p>💡 Dica: Compartilhe nos Stories do Instagram para viralizar!</p>
-                <p>No celular, clique em "Compartilhar no Instagram". No computador, baixe a imagem e envie para seu celular.</p>
+              <div className="text-center text-sm text-gray-600 mt-4 space-y-2">
+                <p className="font-semibold text-purple-600">💡 Como compartilhar no Instagram:</p>
+                <div className="bg-gray-50 p-3 rounded-lg text-left">
+                  <p className="mb-2"><strong>📱 No Celular:</strong></p>
+                  <ol className="list-decimal list-inside space-y-1 text-xs">
+                    <li>Clique em "📱 Compartilhar"</li>
+                    <li>Selecione "Instagram" ou "Instagram Stories"</li>
+                    <li>A imagem será anexada automaticamente</li>
+                  </ol>
+                  
+                  <p className="mt-3 mb-2"><strong>💻 No Computador:</strong></p>
+                  <ol className="list-decimal list-inside space-y-1 text-xs">
+                    <li>Clique em "📥 Baixar Imagem"</li>
+                    <li>Envie a imagem para seu celular</li>
+                    <li>Abra o Instagram e compartilhe nos Stories</li>
+                  </ol>
+                </div>
+                <p className="text-purple-600 font-medium">🚀 Compartilhe nos Stories para viralizar!</p>
               </div>
             </div>
           )}
