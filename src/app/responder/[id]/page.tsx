@@ -136,7 +136,7 @@ export default function ResponderPage() {
             <button
               type="submit"
               disabled={enviando || !resposta.trim()}
-              className="mt-4 bg-gray-900 text-white px-6 py-3 rounded-lg hover:bg-gray-800 disabled:opacity-50 font-medium transition-colors duration-200"
+              className="mt-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-lg font-medium hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50"
             >
               {enviando ? 'Enviando...' : 'Enviar Resposta'}
             </button>
@@ -155,7 +155,7 @@ export default function ResponderPage() {
           <div className="mt-6 text-center">
             <button
               onClick={() => router.push('/dashboard')}
-              className="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors duration-200 font-medium"
+              className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-lg font-medium hover:from-purple-600 hover:to-pink-600 transition-all mt-4"
             >
               Voltar ao Dashboard
             </button>

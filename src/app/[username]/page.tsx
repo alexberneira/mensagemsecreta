@@ -21,6 +21,7 @@ export default function PublicInboxPage() {
   const [feedback, setFeedback] = useState<string | null>(null);
   const [linkResposta, setLinkResposta] = useState<string | null>(null);
   const [mensagensCount, setMensagensCount] = useState<number | null>(null);
+  const [fakeCount, setFakeCount] = useState<number>(0);
   const [userId, setUserId] = useState<string | null>(null);
 
   // Limite de envio por IP (simples, localStorage)
@@ -133,6 +134,12 @@ ${responseLink}`);
     fetchUserAndCount();
   }, [username]);
 
+  useEffect(() => {
+    if (mensagensCount === 0 || mensagensCount === null) {
+      setFakeCount(Math.floor(Math.random() * 10) + 3); // 3 a 12
+    }
+  }, [mensagensCount]);
+
   return (
     <main className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-2 sm:p-4">
       <div className="w-full max-w-md sm:max-w-md mx-auto">
@@ -149,7 +156,10 @@ ${responseLink}`);
             <div className="text-black font-bold text-sm sm:text-base mt-1 text-center">me mande mensagens anônimas!</div>
             {typeof mensagensCount === 'number' && (
               <div className="mt-2 text-xs sm:text-sm text-gray-700 font-medium text-center">
-                <span className="text-black">{mensagensCount}</span> mensagem{mensagensCount === 1 ? '' : 's'} já recebida{mensagensCount === 1 ? '' : 's'}!
+                {(() => {
+                  const count = mensagensCount > 0 ? mensagensCount : fakeCount;
+                  return `${count} ${count === 1 ? 'mensagem já recebida!' : 'mensagens já recebidas!'}`;
+                })()}
               </div>
             )}
           </div>
@@ -161,7 +171,7 @@ ${responseLink}`);
               </label>
               <textarea
                 id="mensagem"
-                placeholder="Ex: és solteiro? (ou envie qualquer pergunta anônima)"
+                placeholder="Ex: Qual seu maior sonho? (ou envie qualquer pergunta anônima)"
                 value={mensagem}
                 onChange={(e) => setMensagem(e.target.value)}
                 className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg resize-none h-24 sm:h-32 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors duration-200 text-base sm:text-lg font-sans text-purple-700 placeholder-gray-400"
@@ -198,6 +208,7 @@ ${responseLink}`);
           <div className="mt-6 sm:mt-8 text-center space-y-1 sm:space-y-2 text-xs text-gray-600">
             <p>• Nenhum dado pessoal é coletado</p>
             <p>• Respeite os outros usuários</p>
+            <p>Termos de Uso • Política de Privacidade</p>
           </div>
           {/* Microcopy de privacidade */}
           <div className="flex flex-col items-center mt-3 sm:mt-4 mb-2">
@@ -218,13 +229,6 @@ ${responseLink}`);
             Quero meu link secreto!
           </a>
         </div>
-        {/* Footer com links para Termos e Privacidade */}
-        <footer className="w-full flex justify-center items-center py-4 mt-4 sm:mt-8">
-          <div className="text-xs text-gray-500 space-x-4">
-            <a href="/termos" className="hover:underline">Termos</a>
-            <a href="/privacidade" className="hover:underline">Privacidade</a>
-          </div>
-        </footer>
       </div>
     </main>
   );

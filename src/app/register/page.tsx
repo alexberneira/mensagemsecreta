@@ -175,6 +175,31 @@ export default function RegisterPage() {
             </div>
 
             <div>
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
+                Nome de usuário
+              </label>
+              <input
+                type="text"
+                id="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value.replace(/[^a-zA-Z0-9_]/g, '').toLowerCase())}
+                required
+                minLength={3}
+                maxLength={20}
+                className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors duration-200 ${usernameValid ? 'border-gray-300' : 'border-red-400'}`}
+                placeholder="ex: maria123"
+                autoComplete="off"
+              />
+              <div className="text-xs mt-1">
+                Seu link público será: <span className="font-mono text-purple-700">inboxsecreta.com/{username || 'seunome'}</span>
+                {usernameChecking && <span className="ml-2 text-gray-400">Verificando...</span>}
+                {!usernameChecking && username && (
+                  usernameValid ? <span className="ml-2 text-green-600">Disponível</span> : <span className="ml-2 text-red-600">Indisponível</span>
+                )}
+              </div>
+            </div>
+
+            <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
                 Senha
               </label>

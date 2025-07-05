@@ -96,7 +96,7 @@ const CardMemeGenerator = ({ message, response, username, onClose }: CardMemeGen
         justifyContent: 'space-between',
         position: 'relative',
         overflow: 'hidden',
-        background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 50%, #ffffff 100%)',
+        background: '#111111',
         boxSizing: 'border-box',
       }}
     >
@@ -205,7 +205,7 @@ const CardMemeGenerator = ({ message, response, username, onClose }: CardMemeGen
         left: '-9999px',
         top: 0,
         overflow: 'hidden',
-        background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 50%, #ffffff 100%)',
+        background: '#111111',
         boxSizing: 'border-box',
         zIndex: -1,
       }}
@@ -340,31 +340,26 @@ const CardMemeGenerator = ({ message, response, username, onClose }: CardMemeGen
               </div>
 
               {/* Botões de ação */}
-              <div className="flex justify-center space-x-4">
+              <div className="flex justify-center">
                 <button
-                  onClick={downloadImage}
-                  className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-2 rounded-lg font-medium hover:from-purple-600 hover:to-pink-600 transition-all"
+                  onClick={() => {
+                    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                    if (isMobile) {
+                      window.location.href = 'instagram://story-camera';
+                    } else {
+                      alert('No computador, baixe a imagem e compartilhe manualmente nos Stories do Instagram pelo seu celular.');
+                    }
+                  }}
+                  className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-5 py-2 rounded-lg font-medium hover:from-pink-600 hover:to-purple-600 transition-all text-base"
                 >
-                  📥 Baixar
-                </button>
-                <button
-                  onClick={copyToClipboard}
-                  className="bg-gray-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-gray-700 transition-all"
-                >
-                  📋 Copiar
-                </button>
-                <button
-                  onClick={() => setGeneratedImage(null)}
-                  className="bg-gray-400 text-white px-6 py-2 rounded-lg font-medium hover:bg-gray-500 transition-all"
-                >
-                  🔄 Nova versão
+                  Compartilhar no Instagram
                 </button>
               </div>
 
               {/* Instruções */}
-              <div className="text-center text-sm text-gray-600">
-                <p>💡 Dica: Compartilhe no Instagram para viralizar!</p>
-                <p>Adicione as hashtags #InboxSecreta #PerguntaAnônima #RespondeAí na legenda</p>
+              <div className="text-center text-sm text-gray-600 mt-4">
+                <p>💡 Dica: Compartilhe nos Stories do Instagram para viralizar!</p>
+                <p>No celular, clique em "Compartilhar no Instagram". No computador, baixe a imagem e envie para seu celular.</p>
               </div>
             </div>
           )}

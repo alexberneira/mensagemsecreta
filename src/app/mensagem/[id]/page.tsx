@@ -53,7 +53,7 @@ export default function MensagemPage() {
         <h1 className="text-2xl font-bold mb-4">Mensagem não encontrada</h1>
         <button
           onClick={() => router.push('/')}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded font-medium hover:from-purple-600 hover:to-pink-600 transition-all"
         >
           Voltar ao início
         </button>
@@ -115,7 +115,7 @@ export default function MensagemPage() {
           <div className="mt-6 text-center">
             <button
               onClick={() => window.location.reload()}
-              className="bg-gray-900 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors duration-200 font-medium"
+              className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-lg font-medium hover:from-purple-600 hover:to-pink-600 transition-all"
             >
               Atualizar
             </button>
