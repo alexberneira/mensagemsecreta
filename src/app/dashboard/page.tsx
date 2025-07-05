@@ -139,9 +139,24 @@ export default function DashboardPage() {
         {/* Status de atualização */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4 mb-6">
           <div className="flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <span className="text-gray-700 text-sm">Última atualização:</span>
-              <span className="text-gray-500 font-mono text-sm">{ultimaAtualizacao.toLocaleTimeString('pt-BR')}</span>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
+                <span className="text-gray-700 text-sm">Última atualização:</span>
+                <span className="text-gray-500 font-mono text-sm">{ultimaAtualizacao.toLocaleTimeString('pt-BR')}</span>
+              </div>
+              {feedback && (
+                <div className={`px-3 py-1 rounded-full text-xs font-medium ${
+                  feedback.includes('Nova mensagem') 
+                    ? 'bg-green-100 text-green-700 border border-green-200' 
+                    : feedback.includes('Atualizando')
+                    ? 'bg-blue-100 text-blue-700 border border-blue-200'
+                    : feedback.includes('Atualizado')
+                    ? 'bg-gray-100 text-gray-700 border border-gray-200'
+                    : 'bg-green-100 text-green-700 border border-green-200'
+                }`}>
+                  {feedback}
+                </div>
+              )}
             </div>
             <button
               onClick={handleAtualizar}
@@ -159,21 +174,6 @@ export default function DashboardPage() {
             <BotaoCopiarLink link={typeof window !== 'undefined' ? window.location.origin + '/' + username : ''} />
           </div>
         </div>
-        
-        {/* Feedback */}
-        {feedback && (
-          <div className={`mb-6 p-3 rounded-lg shadow-sm border ${
-            feedback.includes('Nova mensagem') 
-              ? 'bg-green-50 border-green-200 text-green-800' 
-              : feedback.includes('Atualizando')
-              ? 'bg-blue-50 border-blue-200 text-blue-800'
-              : feedback.includes('Atualizado')
-              ? 'bg-gray-50 border-gray-200 text-gray-800'
-              : 'bg-green-50 border-green-200 text-green-800'
-          }`}>
-            <span className="font-medium text-sm">{feedback}</span>
-          </div>
-        )}
         
         {/* Mensagens */}
         <div className="space-y-4">
